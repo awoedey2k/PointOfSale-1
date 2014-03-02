@@ -16,15 +16,11 @@ public class PointOfSale {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Receipt aa = new Receipt(new FakeDatabase(), "100");
-        
-        aa.addLineItem(new FakeDatabase(), "P123", 1);
-        aa.addLineItem(new FakeDatabase(), "A123", 1);
-        aa.addLineItem(new FakeDatabase(), "P123", 3);
-        
-        ReceiptConsoleOutput bb = new ReceiptConsoleOutput();
-        
-        bb.displayReceipt(aa);
-    }
+        CashRegister cr = new CashRegister();
+        cr.startNewSale(new FakeDatabase(), "100");
+        cr.addNewItem(new FakeDatabase(), "P123", 1.0);
+        cr.addNewItem(new FakeDatabase(), "A123", 2.0);
+        cr.finalizeSale();
+}
     
 }
