@@ -6,16 +6,10 @@ package pointofsale;
  *
  * @author neilkenney
  */
-public class ReceiptConsoleOutput {
-    private Receipt receipt;
+public class ReceiptConsoleOutput implements ReceiptOutputStrategy{
     
     
-    
-    
-    
-    
-    
-    
+    @Override
     public void displayReceipt(Receipt receipt){
         
         System.out.println(receipt.getFinalReceipt());

@@ -9,7 +9,7 @@ package pointofsale;
 public class CashRegister {
     
     private Receipt receipt;
-    private ReceiptConsoleOutput output = new ReceiptConsoleOutput();
+    private ReceiptOutputStrategy output = new ReceiptJOptionPaneOutput();
             
     
     
