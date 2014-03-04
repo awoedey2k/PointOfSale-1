@@ -9,8 +9,12 @@ package pointofsale;
 public class CashRegister {
     
     private Receipt receipt;
-    private ReceiptOutputStrategy output = new ReceiptJOptionPaneOutput();
+    private ReceiptOutputStrategy output;
             
+    
+    public CashRegister(ReceiptOutputStrategy output){
+        this.output = output;
+    }
     
     
     public void startNewSale(StorageStrategy storage, String custNo){
