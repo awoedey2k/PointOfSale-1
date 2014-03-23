@@ -22,6 +22,10 @@ public class Customer {
     }
 
     public void setCustomerNumber(String customerNumber) {
+        
+        if(customerNumber == null || customerNumber.length() != 3){
+            throw new IllegalArgumentException("Customer number must be 3 characters long");
+        }
         this.customerNumber = customerNumber;
     }
 
@@ -30,6 +34,18 @@ public class Customer {
     }
 
     public void setCustomerName(String customerName) {
+        
+        if(customerName == null || customerName.length() > 0){
+            throw new IllegalArgumentException("Customer Name must be at least 1 character");
+        }
+        char[] a = customerName.toCharArray();
+        
+        for(char b : a){
+            if(!Character.isAlphabetic(b)){
+                throw new IllegalArgumentException("Name must be alphabetic");
+            }
+        }
+        
         this.customerName = customerName;
     }
     

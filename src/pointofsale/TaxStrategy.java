@@ -10,8 +10,8 @@ package pointofsale;
  *
  * @author neilkenney
  */
-public interface ReceiptOutputStrategy {
+public interface TaxStrategy {
     
-    public abstract void displayReceipt(Receipt receipt);
-    public abstract void displayErrors(IllegalArgumentException ex);
+    public abstract double getTaxAmount(double priceBeforeTaxes);
+    
 }

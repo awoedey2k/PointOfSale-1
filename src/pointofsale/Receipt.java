@@ -3,6 +3,7 @@
 package pointofsale;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  *
@@ -12,11 +13,22 @@ public class Receipt {
     private StorageStrategy storage;
     private Customer customer;
     private LineItem[] lineItems = new LineItem[0];
+    private TaxStrategy taxStrategy;
+    NumberFormat n = NumberFormat.getCurrencyInstance(Locale.US);
 
-    public Receipt(StorageStrategy storage, String customerNumber) {
+    public TaxStrategy getTaxStrategy() {
+        return taxStrategy;
+    }
+
+    public void setTaxStrategy(TaxStrategy taxStrategy) {
+        this.taxStrategy = taxStrategy;
+    }
+
+    public Receipt(StorageStrategy storage, String customerNumber, TaxStrategy taxStrategy) {
         
         this.storage = storage;
         this.customer = findCustomer(customerNumber);
+        this.taxStrategy = taxStrategy;
     }
     
     public void addLineItem(StorageStrategy storage, String prodId, double qty) {
@@ -42,7 +54,7 @@ public class Receipt {
         return str;
     }
     
-    public double getTotalBillDue(){
+    public double getTotalBillDueBeforeTaxes(){
         
         double d = 0;
         
@@ -55,6 +67,20 @@ public class Receipt {
         
     }
     
+    public double getTaxDue(){
+        
+        double tax;
+        tax = taxStrategy.getTaxAmount(getTotalBillDueBeforeTaxes());
+        
+        return tax;
+            
+    }
+    
+    public double getFinalBill(){
+        double bill;
+        bill = getTaxDue() + getTotalBillDueBeforeTaxes();
+        return bill;
+    }
     private String getProductList(){
         
         String str = "Kohls Department Store";
@@ -74,20 +100,24 @@ public class Receipt {
             str += "    ";
             str += lineItems[a].getQty();
             str += "    ";
-            str += lineItems[a].getProduct().getPrice();
+            str += n.format(lineItems[a].getProduct().getPrice());
             str += "    ";
-            str += lineItems[a].getDiscountAmount();
+            str += n.format(lineItems[a].getDiscountAmount());
             str += "    ";
-            str += (lineItems[a].getProduct().getPrice() - lineItems[a].getDiscountAmount());
+            str += n.format(lineItems[a].getProduct().getPrice() - lineItems[a].getDiscountAmount());
             str += "    ";
-            str += lineItems[a].getProductTotal();
+            str += n.format(lineItems[a].getProductTotal());
             str += '\n';
         }
         
         str += '\n';
         str += '\n';
         
-        str += "Total Due: " + getTotalBillDue();
+        str += "Total Due : " + n.format(getTotalBillDueBeforeTaxes());
+        str += '\n';
+        str += "Taxes Due : " + n.format(getTaxDue());
+        str += '\n';
+        str += "Total With Taxes : " + n.format(getFinalBill());
         
         return str;
     }
@@ -98,8 +128,17 @@ public class Receipt {
         
     }
     
-    private Customer findCustomer(String CustomerNumber){
-        return storage.findCustomer(CustomerNumber);
+    private Customer findCustomer(String customerNumber) throws IllegalArgumentException{
+        if(customerNumber.length() != 3){
+            throw new IllegalArgumentException("Customer Number must be 3 numbers long");
+        }
+        char[] characters = customerNumber.toCharArray();
+        for(char y : characters){
+            if(!Character.isDigit(y)){
+                throw new IllegalArgumentException("Customer number must be numeric");
+            }
+        }
+        return storage.findCustomer(customerNumber);
     }
 
     public StorageStrategy getStorage() {
@@ -126,7 +165,7 @@ public class Receipt {
         this.lineItems = lineItems;
     }
     
-    
+   
     
     
 

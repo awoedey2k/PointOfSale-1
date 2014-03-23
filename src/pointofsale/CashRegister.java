@@ -17,8 +17,11 @@ public class CashRegister {
     }
     
     
-    public void startNewSale(StorageStrategy storage, String custNo){
-        receipt = new Receipt(storage, custNo);
+    public void startNewSale(StorageStrategy storage, String custNo, TaxStrategy taxStrategy){
+        if(custNo == null || custNo.length() != 3){
+            throw new IllegalArgumentException("Customer Number must be 3 digits long");
+        }
+        receipt = new Receipt(storage, custNo, taxStrategy);
         
     }
     
@@ -28,6 +31,10 @@ public class CashRegister {
     
     public void finalizeSale(){
         output.displayReceipt(receipt);
+    }
+    
+    public void printExceptions(IllegalArgumentException ex){
+        output.displayErrors(ex);
     }
            
 

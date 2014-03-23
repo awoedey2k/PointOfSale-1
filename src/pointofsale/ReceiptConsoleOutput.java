@@ -15,6 +15,12 @@ public class ReceiptConsoleOutput implements ReceiptOutputStrategy{
         System.out.println(receipt.getFinalReceipt());
         
         }
+
+    @Override
+    public void displayErrors(IllegalArgumentException ex) {
+         
+        System.out.println(ex.getMessage());
+    }
     }
 
 

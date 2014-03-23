@@ -26,7 +26,11 @@ public class Product {
         return decription;
     }
 
-    public void setDecription(String decription) {
+    public void setDecription(String description) {
+        if(description == null){
+            throw new IllegalArgumentException("Description cannot be null");
+        }
+        
         this.decription = decription;
     }
 
@@ -35,6 +39,9 @@ public class Product {
     }
 
     public void setPrice(double price) {
+        if(price < 0){
+            throw new IllegalArgumentException("Price must be greater than 0");
+        }
         this.price = price;
     }
 
@@ -43,6 +50,10 @@ public class Product {
     }
 
     public void setSku(String sku) {
+        if(sku == null || sku.length() != 3){
+            throw new IllegalArgumentException("Sku must be 3 characters long");
+        }
+       
         this.sku = sku;
     }
 
@@ -51,7 +62,7 @@ public class Product {
     }
 
     public void setDiscount(DiscountStrategy Discount) {
-        this.DiscountStrategy = DiscountStrategy;
+        this.DiscountStrategy = Discount;
     }
     
     

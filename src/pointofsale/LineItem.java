@@ -27,7 +27,7 @@ public class LineItem {
     }
     
     public double getProductTotal(){
-        return product.getPrice() * qty;
+        return (product.getPrice() - product.getDiscountStrategy().getDiscount(product.getPrice(), qty)) * qty ;
     }
     
     

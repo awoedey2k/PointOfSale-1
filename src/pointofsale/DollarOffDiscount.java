@@ -20,6 +20,10 @@ public class DollarOffDiscount implements DiscountStrategy {
     }
 
     public void setDollarOff(double dollarOff) {
+        
+        if(dollarOff < 0){
+            throw new IllegalArgumentException("Discount must be greater than 0");
+        }
         this.dollarOff = dollarOff;
     }
     

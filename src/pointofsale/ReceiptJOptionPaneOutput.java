@@ -16,4 +16,9 @@ public class ReceiptJOptionPaneOutput implements ReceiptOutputStrategy {
         JOptionPane.showMessageDialog(null, receipt.getFinalReceipt());
     }
 
+    @Override
+    public void displayErrors(IllegalArgumentException ex) {
+         JOptionPane.showMessageDialog(null, ex.getMessage());
+    }
+
 }
