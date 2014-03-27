@@ -18,24 +18,30 @@ public class CashRegister {
     
     
     public void startNewSale(StorageStrategy storage, String custNo, TaxStrategy taxStrategy){
-        if(custNo == null || custNo.length() != 3){
-            throw new IllegalArgumentException("Customer Number must be 3 digits long");
-        }
+        try{
         receipt = new Receipt(storage, custNo, taxStrategy);
+        }catch(IllegalArgumentException iae){
+            output.displayErrors(iae);
+        }
         
     }
     
     public void addNewItem(StorageStrategy storage, String prodId, Double qty){
+        try{
         receipt.addLineItem(storage, prodId, qty);
+        }catch(IllegalArgumentException iae){
+            output.displayErrors(iae);
+        }
     }
     
     public void finalizeSale(){
+        try{
         output.displayReceipt(receipt);
+        }catch(IllegalArgumentException iae){
+            output.displayErrors(iae);
+        }
     }
     
-    public void printExceptions(IllegalArgumentException ex){
-        output.displayErrors(ex);
-    }
            
 
 }
